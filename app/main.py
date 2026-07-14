@@ -1,1 +1,0 @@
-print("Electronic trading support simulator started")
