@@ -1,8 +1,15 @@
 import time
 
+from app.order_updates import update_order_status
+
 
 def send_order(order, reject=False):
     if reject:
+        update_order_status(
+            order["client_order_id"],
+            "REJECTED"
+        )
+
         return {
             "status": "REJECTED",
             "reason": "Invalid price",
@@ -14,6 +21,11 @@ def send_order(order, reject=False):
     time.sleep(2)
 
     print("Execution report received")
+
+    update_order_status(
+        order["client_order_id"],
+        "FILLED"
+    )
 
     return {
         "status": "FILLED",
