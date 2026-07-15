@@ -1,0 +1,11 @@
+2026-07-15 09:30:01 INFO ClOrdID=ORD001 FIX message received
+2026-07-15 09:30:02 INFO Order ORD001 sent to exchange
+2026-07-15 09:30:03 INFO ExecutionReport OrderID=EX123 ClOrdID=ORD001 Status=FILLED
+
+2026-07-15 09:31:10 INFO ClOrdID=ORD002 FIX message received
+2026-07-15 09:31:11 ERROR Order ORD002 rejected Reason=Invalid Symbol
+
+2026-07-15 09:32:20 INFO ClOrdID=ORD003 FIX message received
+2026-07-15 09:32:21 ERROR Connection reset while sending Order ORD003
+
+2026-07-15 09:33:00 ERROR Malformed FIX message ClOrdID=ORD004 MissingTag=55
