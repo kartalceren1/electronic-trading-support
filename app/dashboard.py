@@ -1,13 +1,15 @@
-from flask import Flask
+from flask import Flask, render_template
 from database import get_connection
 
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder="../templates"
+)
 
 
 @app.route("/")
 def home():
-
     connection = get_connection()
 
     cursor = connection.cursor()
@@ -25,43 +27,46 @@ def home():
 
     orders = cursor.fetchall()
 
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM orders
+        """
+    )
+
+    total_orders = cursor.fetchone()[0]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM orders
+        WHERE status='FILLED'
+        """
+    )
+
+    filled = cursor.fetchone()[0]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM orders
+        WHERE status='REJECTED'
+        """
+    )
+
+    rejected = cursor.fetchone()[0]
+
     cursor.close()
     connection.close()
 
-
-    html = """
-    <h1>Electronic Trading Support Dashboard</h1>
-
-    <h2>Orders</h2>
-
-    <table border="1">
-
-    <tr>
-        <th>Order ID</th>
-        <th>Symbol</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Status</th>
-    </tr>
-    """
-
-    for order in orders:
-
-        html += f"""
-        <tr>
-            <td>{order[0]}</td>
-            <td>{order[1]}</td>
-            <td>{order[2]}</td>
-            <td>{order[3]}</td>
-            <td>{order[4]}</td>
-        </tr>
-        """
-
-    html += "</table>"
-
-    return html
+    return render_template(
+        "dashboard.html",
+        orders=orders,
+        total_orders=total_orders,
+        filled=filled,
+        rejected=rejected
+    )
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
