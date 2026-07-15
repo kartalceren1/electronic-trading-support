@@ -185,6 +185,36 @@ Electronic Trading Support Dashboard
 
 </table>
 
+<h2>Incident Monitor</h2>
+
+<table>
+
+<tr>
+<th>Order ID</th>
+<th>Type</th>
+<th>Severity</th>
+<th>Description</th>
+</tr>
+
+
+{% for incident in incidents %}
+
+<tr>
+
+<td>{{ incident[0] }}</td>
+
+<td>{{ incident[1] }}</td>
+
+<td>{{ incident[2] }}</td>
+
+<td>{{ incident[3] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
 
 </body>
 

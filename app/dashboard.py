@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from database import get_connection
 
-
 app = Flask(
     __name__,
     template_folder="../templates"
@@ -14,6 +13,7 @@ def home():
 
     cursor = connection.cursor()
 
+    # Get all orders
     cursor.execute(
         """
         SELECT client_order_id,
@@ -27,6 +27,7 @@ def home():
 
     orders = cursor.fetchall()
 
+    # Count total orders
     cursor.execute(
         """
         SELECT COUNT(*)
@@ -36,6 +37,7 @@ def home():
 
     total_orders = cursor.fetchone()[0]
 
+    # Count filled orders
     cursor.execute(
         """
         SELECT COUNT(*)
@@ -46,6 +48,7 @@ def home():
 
     filled = cursor.fetchone()[0]
 
+    # Count rejected orders
     cursor.execute(
         """
         SELECT COUNT(*)
@@ -56,6 +59,20 @@ def home():
 
     rejected = cursor.fetchone()[0]
 
+    # Get incidents
+    cursor.execute(
+        """
+        SELECT order_id,
+               incident_type,
+               severity,
+               description
+        FROM incidents
+        """
+    )
+
+    incidents = cursor.fetchall()
+    print(incidents)
+
     cursor.close()
     connection.close()
 
@@ -64,7 +81,8 @@ def home():
         orders=orders,
         total_orders=total_orders,
         filled=filled,
-        rejected=rejected
+        rejected=rejected,
+        incidents=incidents
     )
 
 
