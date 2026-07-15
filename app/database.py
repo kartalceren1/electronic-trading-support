@@ -3,7 +3,7 @@ import psycopg2
 
 def get_connection():
     connection = psycopg2.connect(
-        host="localhost",
+        host="postgres",
         database="trading_support",
         user="postgres",
         password="password123",
